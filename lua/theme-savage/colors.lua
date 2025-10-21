@@ -1,10 +1,9 @@
-return {
-
+local _colors = {
   Purple = '#d8a0df',
   DarkBlue = '#569cd6',
   LightBlue = '#9cdcfe',
   Cyan = '#48c8af',
-  CommentGreen = '#57a64a',
+  Green = '#57a64a',
   LightGreen = '#b8d7a3',
   Yellow = '#dcdca9',
   LightOrange = '#d69d85',
@@ -17,21 +16,45 @@ return {
   fg = '#D4D4D4',
   bg = '#14161b',
   dark = '#252525',
+}
 
+return {
+
+  Purple = _colors.Purple,
+  DarkBlue = _colors.DarkBlue,
+  LightBlue = _colors.LightBlue,
+  Cyan = _colors.Cyan,
+  LightGreen = _colors.LightGreen,
+  Yellow = _colors.Yellow,
+  LightOrange = _colors.LightOrange,
+  Red = _colors.Red,
+  Gray = _colors.Gray,
+  DarkGray = _colors.DarkGray,
+  context = _colors.context,
+  LightGray = _colors.LightGray,
+
+  fg = _colors.fg,
+  bg = _colors.bg,
+  dark = _colors.dark,
+
+  Accent = _colors.LightBlue,
   Documentation = '#9ec4e6', -- documentation comments
-  Comment = CommentGreen,
-  Type = Cyan,
-  Function = Yellow,
-  KeyWord = DarkBlue,
-  Reference = LightBlue,
-  Value = LightGreen,
-  FlowControl = Purple,
+  Comment = _colors.Green,
+  Type = _colors.Cyan,
+  Function = _colors.Yellow,
+  KeyWord = _colors.DarkBlue,
+  Preprocessor = _colors.Gray,
+  Reference = _colors.LightBlue,
+  ReferenceImmutable = _colors.LightOrange,
+  Syntax = _colors.fg,
+  Value = _colors.LightGreen,
+  FlowControl = _colors.Purple,
   --Syntax = White,
   PanelEdges = '#171a20',    -- lualine and tab borders
   CursorFG = '#515052',
   CursorBG = '#AEAFAD',
 
-  Exception = Purple,
+  Exception = _colors.Purple,
   Error = '#F44747',
   Warning = '#ff8800',
   Info = '#FFCC66',
@@ -58,8 +81,8 @@ return {
   magenta = '#D16D9E',
 
   ui_blue = '#264F78',
-  diff_add = '#587c0c',
-  diff_change = '#0c7d9d',
-  diff_delete = '#94151b',
-  diff_text = '#265478',
+  DiffAdd = _colors.Green,
+  DiffChange = _colors.DarkBlue,
+  DiffDelete = _colors.Red,
+  DiffText = '#265478',
 }

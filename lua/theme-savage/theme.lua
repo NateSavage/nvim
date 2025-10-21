@@ -1,3 +1,6 @@
+--
+-- this file binds our colors to highlight groups defined in neovim and it's plugins
+
 local c = require("theme-savage.colors")
 local config = require("theme-savage.config")
 
@@ -14,7 +17,7 @@ M.base = {
   ["@keyword"]            = { fg = c.KeyWord } ,
   ["@module"]             = { fg = c.Type } ,
   ["@number"]             = { fg = c.Value } ,
-  ["@operator"]           = { fg = c.fg } ,
+  ["@operator"]           = { fg = c.Syntax } ,
   ["@property"]           = { fg = c.Reference } ,
   ["@string"]             = { fg = c.LightOrange } ,
   ["@string.regexp"]      = { fg = c.Cyan } ,
@@ -29,7 +32,7 @@ M.base = {
   Changed                 = { fg = c.Cyan } ,
   Character               = { fg = c.LightOrange } ,
   Comment                 = { fg = c.Comment } ,
-  Conditional             = { fg = c.fg } ,
+  Conditional             = { fg = c.FlowControl } ,
   Constant                = { fg = c.Value } ,
   CurSearch               = { fg = c.fg } ,
   Cursor                  = { fg = c.CursorFG, bg = c.CursorBG },
@@ -40,10 +43,10 @@ M.base = {
   DiagnosticInfo          = { fg = c.Info } ,
   DiagnosticOk            = { fg = c.fg } ,
   DiagnosticWarn          = { fg = c.Warning } ,
-  DiffAdd                 = { fg = c.dark, bg = c.diff_add },
-  DiffChange              = { fg = c.dark, bg = c.diff_change, style = 'underline' },
-  DiffDelete              = { fg = c.dark, bg = c.diff_delete },
-  Directory               = { fg = c.fg } ,
+  --DiffAdd                 = { fg = c.dark, bg = c.DiffAdd },
+  --DiffChange              = { fg = c.dark, bg = c.DiffChange, style = 'underline' },
+  --DiffDelete              = { fg = c.dark, bg = c.DiffDelete },
+  Directory               = { fg = c.Syntax } ,
   Error                   = { fg = c.Error } ,
   ErrorMsg                = { fg = c.Error } ,
   Float                   = { fg = c.Red } ,
@@ -72,10 +75,10 @@ M.base = {
   DiagnosticUnderlineInfo  = { style = 'underline', underline = {style = "curl"}  },
   DiagnosticUnderlineOk    = { style = 'underline', underline = {style = "curl"}  },
   DiagnosticUnderlineWarn  = { style = 'underline', underline = {style = "curl"}  },
-  -- DiffAddedGutter
-  -- DiffModifiedGutter
-  -- DiffRemovedGutter
-  DiffText = { fg = c.dark, bg = c.diff_text },
+  --DiffAddedGutter          = { fg = c.green },
+  --DiffModifiedGutter       = { fg = c.Value },
+  --DiffRemovedGutter        = { fg = c.Error },
+  DiffText = { fg = c.dark, bg = c.DiffText },
   --FloatShadow
   --FloatShadowThrough
   Folded                   = { fg = c.accent, bg = c.dark },
@@ -154,8 +157,8 @@ M.base = {
   CursorIM = { fg = c.cursor_fg, bg = c.cursor_bg },
   Debug = { fg = c.Error },
   Define = { fg = c.purple },
-  DiffAdded = { fg = c.diff_add },
-  DiffRemoved = { fg = c.diff_delete },
+  DiffAdded = { fg = c.DiffAdd },
+  DiffRemoved = { fg = c.DiffDelete },
   DiffFile = { fg = c.cyan },
   DiffIndexLine = { fg = c.gray },
   EndOfBuffer = { fg = c.bg },
@@ -282,14 +285,14 @@ M.plugins = {
   debugBreakpoint = { fg = c.red, style = 'reverse' },
   debugPc = { bg = c.cyan },
   -- Diffview
-  DiffViewNormal = { fg = c.gray, bg = c.dark },
-  DiffviewFilePanelDeletion = { fg = c.diff_delete },
-  DiffviewFilePanelInsertion = { fg = c.diff_add },
-  DiffviewStatusAdded = { fg = c.diff_add },
-  DiffviewStatusDeleted = { fg = c.diff_delete },
-  DiffviewStatusModified = { fg = c.diff_change },
-  DiffviewStatusRenamed = { fg = c.diff_change },
-  DiffviewVertSplit = { bg = c.bg },
+  --DiffViewNormal = { fg = c.gray, bg = c.dark },
+  --DiffviewFilePanelDeletion = { fg = c.diff_delete },
+  --DiffviewFilePanelInsertion = { fg = c.diff_add },
+  --DiffviewStatusAdded = { fg = c.diff_add },
+  --DiffviewStatusDeleted = { fg = c.diff_delete },
+  --DiffviewStatusModified = { fg = c.diff_change },
+  --DiffviewStatusRenamed = { fg = c.diff_change },
+  --DiffviewVertSplit = { bg = c.bg },
 
   -- Indent-blankline
   IndentBlanklineChar = { fg = c.dark_gray },
@@ -345,16 +348,16 @@ M.plugins = {
   TelescopeSelection    = { fg = c.Hint },
 
   -- Treesitter
-  TSAnnotation = { fg = c.yellow },
+  TSAnnotation = { fg = c.Yellow },
   TSAttribute = { fg = c.Cyan },
   TSBoolean = { fg = c.DarkBlue },
   TSCharacter = { fg = c.LightOrange },
-  TSComment = { fg = c.CommentGreen },
+  TSComment = { fg = c.Comment },
   TSConditional = { fg = c.Purple },
   TSConstBuiltin = { fg = c.blue },
-  TSConstMacro = { fg = c.cyan },
+  TSConstMacro = { fg = c.Cyan },
   TSConstant = { fg = c.LightGreen },
-  TSConstructor = { fg = c.cyan },
+  TSConstructor = { fg = c.Cyan },
   TSEmphasis = { style = 'italic' },
   TSError = { fg = c.Red },
   TSException = { fg = c.Red },
@@ -392,8 +395,8 @@ M.plugins = {
   TSTagDelimiter = { fg = c.gray },
   TSText = { fg = c.fg },
   TSTitle = { fg = c.blue, style = 'bold' },
-  TSType = { fg = c.Cyan },
-  TSTypeBuiltin = { fg = c.Cyan },
+  TSType = { fg = c.Type },
+  TSTypeBuiltin = { fg = c.Type },
   TSURI = { fg = c.yellow_orange, style = 'underline' },
   TSUnderline = { style = 'underline' },
   TSVariable = { fg = c.LightBlue },
@@ -408,21 +411,21 @@ M.lsp = {
 }
 ]]--
 M.treesitter = {
-    ["@variable"] = { fg = c.LightBlue },
-    ["@string"] = { fg = c.LightOrange },
+    ["@variable"] = { fg = c.Reference },
+    ["@string"] = { fg = c.ReferenceImmutable },
 }
 
 M.csharp = {
     --["@lsp.type.namespace.cs"] = { fg = c.Type },       -- lsp
-    csPreProcDeclaration       = { fg = c.gray },
+    csPreProcDeclaration       = { fg = c.Preprocessor },
     csXmlLineComment           = { fg = c.Documentation },
     csXmlLineCommentLeader     = { fg = c.Documentation },
 }
 
 M.gdscript = {
-    gdscriptTypeDecl  = { fg = c.LightBlue },
-    gdscriptType      = { fg = c.Type },
-    gdscriptStatement = { fg = c.DarkBlue },
+    gdscriptTypeDecl  = { fg = c.Type },
+  --  gdscriptType      = { fg = c.Type },
+    gdscriptStatement = { fg = c.KeyWord },
 }
 
 --[[
@@ -433,45 +436,27 @@ M.yazi = {
     YaziBufferHovered
     YaziBufferHoveredInSameDirectory
 }
+]]--
 
 M.gitgutter = {
-  GitGutterAdd = { fg = c.diff_add },
-  GitGutterAddLine
-  GitGutterChange  = { fg = c.diff_change },
-  GitGutterChangeLine
-  GitGutterDelete = { fg = c.diff_delete },
-  GitGutterDeleteLine
+  GitGutterAdd = { fg = c.DiffAdd },
+  GitGutterAddLine = { fg = c.DiffAdd },
+  GitGutterChange  = { fg = c.DiffChange },
+  GitGutterChangeLine = { fg = c.DiffChange },
+  GitGutterDelete = { fg = c.DiffDelete },
+  GitGutterDeleteLine = {fg = c.DiffDelete },
 }
 
+
+
 M.gitsigns = {
-  GitSignsAdd = { fg = c.diff_add },
-  GitSignsChange = { fg = c.diff_change },
-  GitSignsDelete = { fg = c.diff_delete },
-  GitSignsDeleteLn
-  GitSignsStagedAdd
-  GitSignsStagedAddCul
-  GitSignsStagedAddLn
-  GitSignsStagedAddNr
-  GitSignsStagedChange
-  GitSignsStagedChangeCul
-  GitSignsStagedChangedelete
-  GitSignsStagedChangedeleteCul
-  GitSignsStagedChangedeleteLn
-  GitSignsStagedChangedeleteNr
-  GitSignsStagedChangeLn
-  GitSignsStagedChangeNr
-  GitSignsStagedDelete
-  GitSignsStagedDeleteCul
-  GitSignsStagedDeleteNr
-  GitSignsStagedTopdelete
-  GitSignsStagedTopdeleteCul
-  GitSignsStagedTopdeleteLn
-  GitSignsStagedTopdeleteNr
-  GitSignsStagedUntracked
-  GitSignsStagedUntrackedCul
-  GitSignsStagedUntrackedLn
-  GitSignsStagedUntrackedNr
+  GitSignsAdd = { fg = c.DiffAdd },
+  GitSignsChange = { fg = c.DiffChange },
+  GitSignsDelete = { fg = c.DiffDelete },
+  --GitSignsDeleteLn = { fg = c.DiffDelete }
 }
+
+--[[
 
 M.scrollbar = {
   Scrollbar
