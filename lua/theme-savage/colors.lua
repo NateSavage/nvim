@@ -38,7 +38,7 @@ return {
   dark = _colors.dark,
 
   Accent = _colors.LightBlue,
-  Documentation = '#9ec4e6', -- documentation comments
+  Documentation = _colors.Green, -- documentation comments
   Comment = _colors.Green,
   Type = _colors.Cyan,
   Function = _colors.Yellow,

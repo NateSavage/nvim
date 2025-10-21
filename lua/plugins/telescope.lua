@@ -8,7 +8,8 @@ return {
 
         telescope.setup({
             defaults = {
-                path_display = {"filename_first"},
+                -- displaying file name before directory is currently broken on windows
+                path_display = { filename_first = {reverse_directories = false} },
                 mappings = {
                     i = {
                         -- alt+j select next
@@ -33,6 +34,11 @@ return {
                    "%.mat",
                    "%.terrainlayer",
                    "%.unity",
+                   "%.prefab", -- readable text, but we don't normally want to edit these files in neovim
+                   "%.preset",
+                   "%.lighting",
+                   -- pure onyx
+                   "GameDB\\Container\\*",
                    -- godot game engine
                    "%.uid",
                    "%.res",  -- binary scene format
