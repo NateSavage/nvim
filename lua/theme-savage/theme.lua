@@ -175,7 +175,7 @@ M.base = {
   MsgSeparator = { fg = c.fg, bg = c.bg },
   NonText = { fg = c.fg },
   Normal = { fg = c.fg, bg = config.transparent_background and 'NONE' or c.bg },
-  NormalFloat = { bg = c.dark },
+  NormalFloat = { bg = c.bg }, -- background of floating windows
   NormalNC = { fg = c.fg, bg = config.transparent_background and 'NONE' or c.bg },
   Number = { fg = c.Value },
   Operator = { fg = c.fg },
@@ -447,7 +447,12 @@ M.gitgutter = {
   GitGutterDeleteLine = {fg = c.DiffDelete },
 }
 
-
+M.harpoon = {
+    HarpoonInactive       = { fg = c.DarkGray },
+    HarpoonActive         = { fg = c.fg       },
+    HarpoonNumberActive   = { fg = c.Accent   },
+    HarpoonNumberInactive = { fg = c.Accent   }
+}
 
 M.gitsigns = {
   GitSignsAdd = { fg = c.DiffAdd },

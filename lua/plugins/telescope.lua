@@ -37,6 +37,7 @@ return {
                    "%.prefab", -- readable text, but we don't normally want to edit these files in neovim
                    "%.preset",
                    "%.lighting",
+                   "%.ogg",
                    -- pure onyx
                    "GameDB\\Container\\*",
                    -- godot game engine
@@ -62,6 +63,7 @@ return {
                    "%.ma",    -- maya ascii
                    -- fonts
                    "%.ttf",
+                   "%.TTF",
                },
             },
         })

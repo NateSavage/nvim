@@ -14,9 +14,21 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 
+-- set tabs to 4 spaces when gdscript files are opened (gdscript is sensitive to whitespace)
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "gdscript" },
+  callback = function()
+    vim.bo.sw = 4
+    vim.bo.sts = 4
+    vim.bo.ts = 4
+    vim.bo.expandtab = false
+    vim.bo.softtabstop = 4
+  end,
+})
+
 vim.opt.colorcolumn = "121" --"+1" -- highlight column after text width
 --vim.opt.textwidth = 120
-vim.opt.wrap = true
+vim.opt.wrap = false
 vim.opt.linebreak = true
 
 -- long running undo files

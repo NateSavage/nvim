@@ -8,17 +8,15 @@ vim.lsp.enable('lua')
 vim.lsp.enable('roslyn')
 vim.lsp.enable('gdscript')
 --vim.lsp.enable('gdshader')
---
 
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
     if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
+      -- prevent the built-in vim.lsp.completion autotrigger from selecting the first item
       vim.opt.completeopt = { 'menu', 'menuone', 'noinsert', 'fuzzy', 'popup' }
       vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
-      vim.keymap.set('i', '<C-Space>', function()
-        vim.lsp.completion.get()
-      end)
+      vim.keymap.set("i", "<C-space>", vim.lsp.completion.get, { desc = "trigger autocompletion" })
     end
   end,
 })
@@ -41,15 +39,17 @@ vim.diagnostic.config({
         current_line = true,
         severity = {
             min = vim.diagnostic.severity.HINT,
-            max = vim.diagnostic.severity.WARN,
+            max = vim.diagnostic.severity.ERROR,
         }
     },
 
     -- display error messages inline always
+    --[[
     virtual_text = {
         severity = {
             min = vim.diagnostic.severity.ERROR,
             max = vim.diagnostic.severity.ERROR,
         }
     },
+    --]]
 })

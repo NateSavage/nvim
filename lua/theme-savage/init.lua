@@ -6,6 +6,7 @@ function M.setup()
     
     local util = require("theme-savage.util")
     local theme = require("theme-savage.theme")
+    vim.api.nvim_set_hl(0, 'Statement', { bold = false })
     util.load(theme)
 end
     
