@@ -1,5 +1,6 @@
 {
   "blink.cmp": { "branch": "main", "commit": "327fff91fe6af358e990be7be1ec8b78037d2138" },
+  "fff.nvim": { "branch": "main", "commit": "65aeacf9e2c663c9af2b1003727aa25acac96db4" },
   "friendly-snippets": { "branch": "main", "commit": "572f5660cf05f8cd8834e096d7b4c921ba18e175" },
   "gitsigns.nvim": { "branch": "main", "commit": "20ad4419564d6e22b189f6738116b38871082332" },
   "godotdev.nvim": { "branch": "master", "commit": "79d9315988b7772c03a1cabb6f31f5287c849e2b" },
