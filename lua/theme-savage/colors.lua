@@ -14,8 +14,8 @@ local _colors = {
   LightGray = '#c8c9c1',
 
   fg = '#D4D4D4',
-  bg = '#14161b',
-  dark = '#252525',
+  bg = '#1e232a',
+  dark = '#171b21',
 }
 
 return {
