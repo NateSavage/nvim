@@ -43,6 +43,11 @@ vim.opt.linebreak = true
 -- incremental search filter feedback
 vim.opt.incsearch = true
 
+-- case insensitive search by default
+vim.opt.ignorecase = true
+-- override ignorecase if search pattern contains uppercase letters
+vim.opt.smartcase = true
+
 -- tell vim our terminal supports more colors
 vim.opt.termguicolors = true
 
@@ -51,4 +56,3 @@ vim.opt.scrolloff = 8
 
 -- milliseconds before swap buffer is automatically written, and time to wait for command holds
 vim.opt.updatetime = 50
-
