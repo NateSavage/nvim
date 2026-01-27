@@ -23,11 +23,19 @@ return {
             },
         },
         windows = {
-            edit = {
-                border = "rounded",
+            position = "right",
+            wrap = true,
+            width = 30,
+            sidebar_header = {
+                enabled = true,
+                align = "center",
+                rounded = true,
             },
-            ask = {
-                border = "rounded",
+        },
+        highlights = {
+            diff = {
+                current = "AvanteConflictCurrent",
+                incoming = "AvanteConflictIncoming",
             },
         },
         hints = {
