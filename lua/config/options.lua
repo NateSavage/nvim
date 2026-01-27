@@ -1,5 +1,8 @@
 vim.opt.number = true
 
+-- no swapefiles
+vim.opt.swapfile = false
+
 -- relative line numbers with the selected line being absolute
 vim.opt.nu = true
 vim.opt.relativenumber = true

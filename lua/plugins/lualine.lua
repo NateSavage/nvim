@@ -48,27 +48,29 @@ end
 local config = {
     options = {
 
-    -- Disable sections and component separators
-    component_separators = '',
-    section_separators = '',
+        -- Disable sections and component separators
+        component_separators = '',
+        section_separators = '',
 
-    theme = {
-        -- We are going to use lualine_c an lualine_x as left and
-        -- right section. Both are highlighted by c theme .  So we
-        -- are just setting default looks o statusline
-        normal = {
-            a = defaultColors,
-            b = defaultColors,
-            c = defaultColors,
-            x = defaultColors,
-            y = defaultColors,
-            z = defaultColors
+
+
+        theme = {
+            -- We are going to use lualine_c an lualine_x as left and
+            -- right section. Both are highlighted by c theme .  So we
+            -- are just setting default looks o statusline
+            normal = {
+                a = defaultColors,
+                b = defaultColors,
+                c = defaultColors,
+                x = defaultColors,
+                y = defaultColors,
+                z = defaultColors
+            },
+            inactive = { color = defaultColors },
+            insert = { color = defaultColors },
+            visual = { color = defaultColors },
+            replace = { color = defaultColors },
         },
-        inactive = { color = defaultColors },
-        insert =   { color = defaultColors },
-        visual =   { color = defaultColors },
-        replace =  { color = defaultColors },
-    },
     },
     sections = {
         -- these are to remove the defaults
@@ -90,20 +92,24 @@ local config = {
         lualine_c = {},
         lualine_x = {},
     },
+
+    -- Custom statusline for Avante filetypes
+    filetypes = {},
+    extensions = {},
 }
 
 local conditions = {
-  buffer_not_empty = function()
-    return vim.fn.empty(vim.fn.expand('%:t')) ~= 1
-  end,
-  hide_in_width = function()
-    return vim.fn.winwidth(0) > 80
-  end,
-  check_git_workspace = function()
-    local filepath = vim.fn.expand('%:p:h')
-    local gitdir = vim.fn.finddir('.git', filepath .. ';')
-    return gitdir and #gitdir > 0 and #gitdir < #filepath
-  end,
+    buffer_not_empty = function()
+        return vim.fn.empty(vim.fn.expand('%:t')) ~= 1
+    end,
+    hide_in_width = function()
+        return vim.fn.winwidth(0) > 80
+    end,
+    check_git_workspace = function()
+        local filepath = vim.fn.expand('%:p:h')
+        local gitdir = vim.fn.finddir('.git', filepath .. ';')
+        return gitdir and #gitdir > 0 and #gitdir < #filepath
+    end,
 }
 
 -- Inserts a component in lualine_c at left section
@@ -124,117 +130,141 @@ return {
         vim.g.lualine_laststatus = vim.o.laststatus
         if vim.fn.argc(-1) > 0 then -- set an empty statusline till lualine loads
             vim.o.statusline = " "
-        else -- hide the statusline on the starter page
+        else                        -- hide the statusline on the starter page
             vim.o.laststatus = 0
         end
     end,
 
     opts = function()
+        ins_left {
+            function() return '▊' end,
+            color = { fg = ColorForCurrentMode() }, -- Sets highlighting of component
+            padding = { left = 0, right = 1 },      -- We don't need space before this
+        }
+
+        ins_left {
+            -- mode component
+            function() return '' end,
+            color = { fg = colors.red },
+            padding = { right = 1, left = 1 },
+        }
+
+        ins_left {
+            -- filesize component
+            'filesize',
+            cond = conditions.buffer_not_empty,
+        }
+
+        ins_left {
+            'filename',
+            cond = conditions.buffer_not_empty,
+            color = { gui = 'bold' },
+        }
+
+        ins_left { 'location', color = { gui = 'bold' } }
 
 
-    ins_left {
-        function() return '▊' end,
-        color = { fg = ColorForCurrentMode() }, -- Sets highlighting of component
-        padding = { left = 0, right = 1 }, -- We don't need space before this
-    }
+        ins_left {
+            'diagnostics',
+            sources = { 'nvim_diagnostic' },
+            symbols = { error = ' ', warn = ' ', info = ' ' },
+            diagnostics_color = {
+                error = { fg = colors.red },
+                warn = { fg = colors.yellow },
+                info = { fg = colors.cyan },
+            },
+        }
 
-    ins_left {
-        -- mode component
-        function() return '' end,
-        color = { fg = colors.red },
-        padding = { right = 1, left = 1 },
-    }
+        -- Insert mid section. You can make any number of sections in neovim :)
+        -- for lualine it's any number greater then 2
+        ins_left {
+            function() return '%=' end,
+        }
 
-    ins_left {
-        -- filesize component
-        'filesize',
-        cond = conditions.buffer_not_empty,
-    }
-
-    ins_left {
-        'filename',
-        cond = conditions.buffer_not_empty,
-        color = { gui = 'bold' },
-    }
-
-    ins_left { 'location', color = {  gui = 'bold' } }
-
-
-    ins_left {
-        'diagnostics',
-        sources = { 'nvim_diagnostic' },
-        symbols = { error = ' ', warn = ' ', info = ' ' },
-        diagnostics_color = {
-            error = { fg = colors.red },
-            warn =  { fg = colors.yellow },
-            info =  { fg = colors.cyan },
-        },
-    }
-
-    -- Insert mid section. You can make any number of sections in neovim :)
-    -- for lualine it's any number greater then 2
-    ins_left {
-        function() return '%=' end,
-    }
-
-    ins_left {
-        symbols = {
-            -- Standard unicode symbols to cycle through for LSP progress:
-            spinner = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' },
-            -- Standard unicode symbol for when LSP is done:
-            done = '✓',
-            -- Delimiter inserted between LSP names:
-            separator = ' ',
-        },
-        -- List of LSP names to ignore (e.g., `null-ls`):
-        ignore_lsp = {},
-        -- Lsp server name .
-        function()
-            local msg = 'No Language Server'
-            local buf_ft = vim.api.nvim_get_option_value('filetype', { buf = 0 })
-            local clients = vim.lsp.get_clients()
-            if next(clients) == nil then
-                return msg
-            end
-            for _, client in ipairs(clients) do
-                local filetypes = client.config.filetypes
-                if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-                    return client.name
+        ins_left {
+            symbols = {
+                -- Standard unicode symbols to cycle through for LSP progress:
+                spinner = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' },
+                -- Standard unicode symbol for when LSP is done:
+                done = '✓',
+                -- Delimiter inserted between LSP names:
+                separator = ' ',
+            },
+            -- List of LSP names to ignore (e.g., `null-ls`):
+            ignore_lsp = {},
+            -- Lsp server name .
+            function()
+                local msg = 'No Language Server'
+                local buf_ft = vim.api.nvim_get_option_value('filetype', { buf = 0 })
+                local clients = vim.lsp.get_clients()
+                if next(clients) == nil then
+                    return msg
                 end
-            end
-            return msg
-        end,
-        icon = '',
-        color = { fg = colors.fg, gui = 'bold' },
-    }
+                for _, client in ipairs(clients) do
+                    local filetypes = client.config.filetypes
+                    if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+                        return client.name
+                    end
+                end
+                return msg
+            end,
+            icon = '',
+            color = { fg = colors.fg, gui = 'bold' },
+        }
 
-    ins_right {
-        function() return '%=' end,
-    }
+        ins_right {
+            function() return '%=' end,
+        }
 
-    ins_right { 'progress', color = {  gui = 'bold' } }
-   
-    -- Add components to right sections
-    ins_right {
-        'o:encoding', -- option component same as &encoding in viml
-        fmt = string.upper, -- I'm not sure why it's upper case either ;)
-        cond = conditions.hide_in_width,
-        color = { gui = 'bold' },
-    }
+        ins_right { 'progress', color = { gui = 'bold' } }
 
-    ins_right {
-        'fileformat',
-        fmt = string.upper,
-        icons_enabled = false, -- I think icons are cool but Eviline doesn't have them. sigh
-        color = { gui = 'bold' },
-    }
+        -- Add components to right sections
+        ins_right {
+            'o:encoding',       -- option component same as &encoding in viml
+            fmt = string.upper, -- I'm not sure why it's upper case either ;)
+            cond = conditions.hide_in_width,
+            color = { gui = 'bold' },
+        }
 
-    ins_right {
-        function() return '▊' end,
-        color = { fg = ColorForCurrentMode() },
-        padding = { left = 1, right = 0 },
-    }
+        ins_right {
+            'fileformat',
+            fmt = string.upper,
+            icons_enabled = false, -- I think icons are cool but Eviline doesn't have them. sigh
+            color = { gui = 'bold' },
+        }
 
-    return config
+        ins_right {
+            function() return '▊' end,
+            color = { fg = ColorForCurrentMode() },
+            padding = { left = 1, right = 0 },
+        }
+
+        -- Add custom extension for Avante
+        config.extensions = {
+            {
+                sections = {
+                    lualine_a = {},
+                    lualine_b = {},
+                    lualine_c = {
+                        {
+                            function() return '%=' end,
+                        },
+                        {
+                            function() return vim.bo.filetype end,
+                            color = { fg = colors.magenta, gui = 'bold' },
+                        },
+                        {
+                            function() return '%=' end,
+                        },
+                    },
+                    lualine_x = {},
+                    lualine_y = {},
+                    lualine_z = {},
+                },
+                filetypes = { 'Avante', 'AvanteInput' },
+            }
+        }
+
+        return config
     end,
 }

@@ -1,3 +1,11 @@
+-- window navigation
+vim.keymap.set("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
+
+-- quick quit
+vim.keymap.set("n", "q", ":q<CR>", { noremap = true, silent = true })
 
 -- shift selected lines up/down
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
@@ -20,6 +28,11 @@ vim.keymap.set('n', '<A-j>', '<C-d>', { noremap = true, silent = true })
 
 vim.keymap.set("n", "<leader>rn", ":IncRename ")
 
+-- shift+space, ctrl+space, and alt+space as the _ character in insert mode
+-- not all terminals recognize shift + space as a different input from just spacebar
+vim.keymap.set('i', '<S-Space>', '_', { noremap = true })
+vim.keymap.set('i', '<C-Space>', '_', { noremap = true })
+vim.keymap.set('i', '<A-Space>', '_', { noremap = true })
 
 -- gv reselects previously selected text
 -- = aligns text to tab boundaries

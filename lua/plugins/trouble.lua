@@ -4,17 +4,17 @@ return {
   cmd = "Trouble",
   keys = {
     {
-      "<leader>td",
+      "td",
       "<cmd>Trouble diagnostics toggle focus=true<cr>",
       desc = "Diagnostics (Trouble)",
     },
     {
-      "<leader>ts",
+      "ts",
       "<cmd>Trouble symbols toggle focus=false<cr>",
       desc = "Symbols (Trouble)",
     },
     {
-      "<leader>tr",
+      "tr",
       "<cmd>Trouble lsp toggle focus=true win.position=top<cr>",
       desc = "LSP Definitions / references / ... (Trouble)",
     },

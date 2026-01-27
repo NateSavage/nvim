@@ -7,12 +7,11 @@ return {
     { "nvim-lua/plenary.nvim", lazy = true },
   },
   keys = {
-    -- 👇 in this section, choose your own keymappings!
     {
-      "<leader>-",
+      "fd",
       mode = { "n", "v" },
       "<cmd>Yazi<cr>",
-      desc = "Open yazi at the current file",
+      desc = "Find Directory (open yazi to current file directory)",
     },
     {
       -- Open in the current working directory
