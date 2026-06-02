@@ -24,6 +24,9 @@ M.base = {
     ["@string"]                            = { fg = c.LightOrange },
     ["@string.regexp"]                     = { fg = c.Cyan },
     ["@string.special"]                    = { fg = c.Cyan },
+    ["@tag"]                               = { fg = c.DarkBlue },       -- HTML/JSX tag names
+    ["@tag.attribute"]                     = { fg = c.LightBlue },      -- HTML attribute names
+    ["@tag.delimiter"]                     = { fg = c.Gray },            -- < > </ />
     ["@type"]                              = { fg = c.Type },
     ["@type.definition"]                   = { fg = c.Type },
     ["@type.qualifier"]                    = { fg = c.Type },
@@ -443,6 +446,25 @@ M.yazi = {
     YaziBufferHoveredInSameDirectory
 }
 ]] --
+
+M.html = {
+    ["@tag.html"]               = { fg = c.DarkBlue },      -- <div>, <p>, <span>
+    ["@tag.attribute.html"]     = { fg = c.LightBlue },     -- class=, href=, id=
+    ["@tag.delimiter.html"]     = { fg = c.Gray },           -- < > </ />
+    ["@string.html"]            = { fg = c.LightOrange },   -- "attribute-value"
+    ["@markup.heading.1.html"]  = { fg = c.fg },
+    ["@markup.heading.2.html"]  = { fg = c.fg },
+    ["@markup.heading.3.html"]  = { fg = c.fg },
+    ["@markup.heading.4.html"]  = { fg = c.fg },
+    ["@markup.heading.5.html"]  = { fg = c.fg },
+    ["@markup.heading.6.html"]  = { fg = c.fg },
+}
+
+M.css = {
+    ["@keyword.css"]            = { fg = c.FlowControl },   -- @media, @keyframes, @import
+    ["@variable.css"]           = { fg = c.LightBlue },     -- --custom-property
+    ["@string.special.css"]     = { fg = c.LightOrange },   -- plain values: flex, block, solid
+}
 
 M.gitgutter = {
     GitGutterAdd        = { fg = c.DiffAdd },

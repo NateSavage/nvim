@@ -6,6 +6,9 @@
 
 vim.lsp.enable('lua')
 vim.lsp.enable('gdscript')
+vim.lsp.enable('html')
+vim.lsp.enable('cssls')
+vim.lsp.enable('astro')
 
 local cs_solution = vim.fs.find(function(name)
     return name:match('%.sln$') ~= nil
@@ -23,7 +26,7 @@ vim.api.nvim_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { no
 
 -- mark buffers as loading when a managed filetype is opened without an active client
 vim.api.nvim_create_autocmd('FileType', {
-    pattern = { 'cs', 'csproj', 'lua', 'gdscript' },
+    pattern = { 'cs', 'csproj', 'lua', 'gdscript', 'html', 'css', 'scss', 'less', 'astro' },
     callback = function(ev)
         if #vim.lsp.get_clients({ bufnr = ev.buf }) == 0 then
             vim.b[ev.buf].lsp_loading = true

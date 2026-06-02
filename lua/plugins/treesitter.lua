@@ -38,7 +38,8 @@ return {
               "lua", "odin", "python", "rust", "sql",
 	          "c", "cpp", "c_sharp",
 	          "gdscript", "gdshader",
-	          "bash", "just", "nix"
+	          "bash", "just", "nix",
+	          "html", "css",
   	    },
     }
  }
