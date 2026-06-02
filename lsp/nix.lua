@@ -2,7 +2,7 @@
 return {
   cmd = { 'nil', '--stdio' },
   filetypes = { 'nix' },
-  root_markers = { 'flake.nix', 'default.nix', '.git' },
+  root_markers = { 'flake.nix', 'default.nix' },
   settings = {
     ['nil'] = {
       formatting = {
