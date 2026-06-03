@@ -4,7 +4,7 @@ This is Nates [neovim](https://neovim.io/) configuration. If you want to try it 
 
 <details><summary>Config Locations</summary>
   <details><summary>Windows</summary>
-  Under <code>%appdatalocal%</code>, like <code>C:\Users\NateS\AppData\Local\nvim</code> and not <code>C:\Users\NateS\AppData\Local\nvim\nvim</code>.
+  Under <code>%AppdataLocal%</code>, like <code>C:\Users\NateS\AppData\Local\nvim</code> and not <code>C:\Users\NateS\AppData\Local\nvim\nvim</code>.
   </details><details>
   <summary>Mac</summary>
    Under <code>~/.config/</code>, like <code>/Users/nates/.config/nvim</code> and not <code>/Users/nates/.config/nvim/nvim</code>.
