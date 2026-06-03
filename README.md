@@ -16,3 +16,13 @@ This is Nates [neovim](https://neovim.io/) configuration. If you want to try it 
    Under <code>~/.config/</code>, like <code>/home/nates/.config/nvim</code> and not <code>/home/nates/.config/nvim/nvim</code>.
   </details>
 </details>
+
+---
+
+### Hotkeys
+*How the hell do I even use a text editor without a mouse, let alone one with customized hotkeys?*
+
+#### Legend
+**blue**: default neovim binding <br>
+**green**: binding custom to nates configuration <br>
+**orange**: key held or pressed first
