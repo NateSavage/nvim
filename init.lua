@@ -2,7 +2,7 @@
 require("config.keymap")
 require("config.options")
 require("config.lsp")
-require("config.lazy")
+require("config.plugins")
 
 vim.cmd [[colorscheme savage]]
 vim.o.winborder = 'rounded' --'╭,─,╮,│,╯,─,╰,│'

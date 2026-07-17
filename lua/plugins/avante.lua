@@ -1,3 +1,8 @@
+-- INACTIVE: was `enabled = false` under lazy.nvim, so never actually ran.
+-- Not required by lua/config/plugins.lua and not in nvim-wrapper/module.nix's
+-- specs - left here as a starting point if this ever gets turned back on.
+-- (kept in the old lazy.nvim spec-table shape purely as reference; none of
+-- the `build`/`event`/`dependencies`/`version` keys below do anything now)
 return {
     "yetone/avante.nvim",
     enabled = false,

@@ -1,10 +1,3 @@
-return {
-  "Cpoing/microscope.nvim",
-  cmd = "MicroscopePeek",
-  keys = {
-      { "<leader>r", ":MicroscopePeek<CR>", desc = "Peek definition" },
-  },
-  config = function()
-      require("microscope")
-  end,
-}
+require("microscope")
+
+vim.keymap.set("n", "<leader>r", ":MicroscopePeek<CR>", { desc = "Peek definition" })

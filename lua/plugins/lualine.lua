@@ -122,160 +122,147 @@ local function ins_right(component)
     table.insert(config.sections.lualine_x, component)
 end
 
-
-return {
-    'nvim-lualine/lualine.nvim',
-    event = "VeryLazy",
-    init = function()
-        vim.g.lualine_laststatus = vim.o.laststatus
-        if vim.fn.argc(-1) > 0 then -- set an empty statusline till lualine loads
-            vim.o.statusline = " "
-        else                        -- hide the statusline on the starter page
-            vim.o.laststatus = 0
-        end
-    end,
-
-    config = function(_, opts)
-        local lualine = require('lualine')
-        lualine.setup(opts)
-        vim.api.nvim_create_autocmd({ 'LspAttach', 'LspDetach', 'LspProgress' }, {
-            callback = function() lualine.refresh() end,
-        })
-    end,
-
-    opts = function()
-        ins_left {
-            function() return '▊' end,
-            color = { fg = ColorForCurrentMode() }, -- Sets highlighting of component
-            padding = { left = 0, right = 1 },      -- We don't need space before this
-        }
-
-        ins_left {
-            -- mode component
-            function() return '' end,
-            color = { fg = colors.red },
-            padding = { right = 1, left = 1 },
-        }
-
-        ins_left {
-            -- filesize component
-            'filesize',
-            cond = conditions.buffer_not_empty,
-        }
-
-        ins_left {
-            'filename',
-            cond = conditions.buffer_not_empty,
-            color = { gui = 'bold' },
-        }
-
-        ins_left { 'location', color = { gui = 'bold' } }
-
-
-        ins_left {
-            'diagnostics',
-            sources = { 'nvim_diagnostic' },
-            symbols = { error = ' ', warn = ' ', info = ' ' },
-            diagnostics_color = {
-                error = { fg = colors.red },
-                warn = { fg = colors.yellow },
-                info = { fg = colors.cyan },
-            },
-        }
-
-        -- Insert mid section. You can make any number of sections in neovim :)
-        -- for lualine it's any number greater then 2
-        ins_left {
-            function() return '%=' end,
-        }
-
-        ins_left {
-            function()
-                local fixed_width = 40
-                local status = vim.lsp.status()
-                local text
-                if status and status ~= '' then
-                    text = status
-                elseif vim.b.lsp_loading then
-                    text = 'Loading...'
-                elseif vim.b.lsp_stopped then
-                    text = vim.b.lsp_stopped .. ' (stopped)'
-                else
-                    local buf_ft = vim.api.nvim_get_option_value('filetype', { buf = 0 })
-                    local clients = vim.lsp.get_clients({ bufnr = 0 })
-                    text = 'No Language Server'
-                    for _, client in ipairs(clients) do
-                        local filetypes = client.config.filetypes
-                        if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-                            text = client.name
-                            break
-                        end
-                    end
-                end
-
-                if #text > fixed_width then
-                    text = text:sub(1, fixed_width - 1) .. '…'
-                end
-                local pad = math.floor((fixed_width - #text) / 2)
-                return string.rep(' ', pad) .. text .. string.rep(' ', fixed_width - #text - pad)
-            end,
-            icon = '',
-            color = { fg = colors.fg, gui = 'bold' },
-        }
-
-        ins_right {
-            function() return '%=' end,
-        }
-
-        ins_right { 'progress', color = { gui = 'bold' } }
-
-        -- Add components to right sections
-        ins_right {
-            'o:encoding',       -- option component same as &encoding in viml
-            fmt = string.upper, -- I'm not sure why it's upper case either ;)
-            cond = conditions.hide_in_width,
-            color = { gui = 'bold' },
-        }
-
-        ins_right {
-            'fileformat',
-            fmt = string.upper,
-            icons_enabled = false, -- I think icons are cool but Eviline doesn't have them. sigh
-            color = { gui = 'bold' },
-        }
-
-        ins_right {
-            function() return '▊' end,
-            color = { fg = ColorForCurrentMode() },
-            padding = { left = 1, right = 0 },
-        }
-
-        -- Add custom extension for Avante
-        config.extensions = {
-            {
-                sections = {
-                    lualine_a = {},
-                    lualine_b = {},
-                    lualine_c = {
-                        {
-                            function() return '%=' end,
-                        },
-                        {
-                            function() return vim.bo.filetype end,
-                            color = { fg = colors.magenta, gui = 'bold' },
-                        },
-                        {
-                            function() return '%=' end,
-                        },
-                    },
-                    lualine_x = {},
-                    lualine_y = {},
-                    lualine_z = {},
-                },
-                filetypes = { 'Avante', 'AvanteInput' },
-            }
-        }
-
-        return config
-    end,
+ins_left {
+    function() return '▊' end,
+    color = { fg = ColorForCurrentMode() }, -- Sets highlighting of component
+    padding = { left = 0, right = 1 },      -- We don't need space before this
 }
+
+ins_left {
+    -- mode component
+    function() return '' end,
+    color = { fg = colors.red },
+    padding = { right = 1, left = 1 },
+}
+
+ins_left {
+    -- filesize component
+    'filesize',
+    cond = conditions.buffer_not_empty,
+}
+
+ins_left {
+    'filename',
+    cond = conditions.buffer_not_empty,
+    color = { gui = 'bold' },
+}
+
+ins_left { 'location', color = { gui = 'bold' } }
+
+
+ins_left {
+    'diagnostics',
+    sources = { 'nvim_diagnostic' },
+    symbols = { error = ' ', warn = ' ', info = ' ' },
+    diagnostics_color = {
+        error = { fg = colors.red },
+        warn = { fg = colors.yellow },
+        info = { fg = colors.cyan },
+    },
+}
+
+-- Insert mid section. You can make any number of sections in neovim :)
+-- for lualine it's any number greater then 2
+ins_left {
+    function() return '%=' end,
+}
+
+ins_left {
+    function()
+        local fixed_width = 40
+        local status = vim.lsp.status()
+        local text
+        if status and status ~= '' then
+            text = status
+        elseif vim.b.lsp_loading then
+            text = 'Loading...'
+        elseif vim.b.lsp_stopped then
+            text = vim.b.lsp_stopped .. ' (stopped)'
+        else
+            local buf_ft = vim.api.nvim_get_option_value('filetype', { buf = 0 })
+            local clients = vim.lsp.get_clients({ bufnr = 0 })
+            text = 'No Language Server'
+            for _, client in ipairs(clients) do
+                local filetypes = client.config.filetypes
+                if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+                    text = client.name
+                    break
+                end
+            end
+        end
+
+        if #text > fixed_width then
+            text = text:sub(1, fixed_width - 1) .. '…'
+        end
+        local pad = math.floor((fixed_width - #text) / 2)
+        return string.rep(' ', pad) .. text .. string.rep(' ', fixed_width - #text - pad)
+    end,
+    icon = '',
+    color = { fg = colors.fg, gui = 'bold' },
+}
+
+ins_right {
+    function() return '%=' end,
+}
+
+ins_right { 'progress', color = { gui = 'bold' } }
+
+-- Add components to right sections
+ins_right {
+    'o:encoding',       -- option component same as &encoding in viml
+    fmt = string.upper, -- I'm not sure why it's upper case either ;)
+    cond = conditions.hide_in_width,
+    color = { gui = 'bold' },
+}
+
+ins_right {
+    'fileformat',
+    fmt = string.upper,
+    icons_enabled = false, -- I think icons are cool but Eviline doesn't have them. sigh
+    color = { gui = 'bold' },
+}
+
+ins_right {
+    function() return '▊' end,
+    color = { fg = ColorForCurrentMode() },
+    padding = { left = 1, right = 0 },
+}
+
+-- Add custom extension for Avante
+config.extensions = {
+    {
+        sections = {
+            lualine_a = {},
+            lualine_b = {},
+            lualine_c = {
+                {
+                    function() return '%=' end,
+                },
+                {
+                    function() return vim.bo.filetype end,
+                    color = { fg = colors.magenta, gui = 'bold' },
+                },
+                {
+                    function() return '%=' end,
+                },
+            },
+            lualine_x = {},
+            lualine_y = {},
+            lualine_z = {},
+        },
+        filetypes = { 'Avante', 'AvanteInput' },
+    }
+}
+
+vim.g.lualine_laststatus = vim.o.laststatus
+if vim.fn.argc(-1) > 0 then -- set an empty statusline till lualine loads
+    vim.o.statusline = " "
+else                        -- hide the statusline on the starter page
+    vim.o.laststatus = 0
+end
+
+local lualine = require('lualine')
+lualine.setup(config)
+vim.api.nvim_create_autocmd({ 'LspAttach', 'LspDetach', 'LspProgress' }, {
+    callback = function() lualine.refresh() end,
+})
