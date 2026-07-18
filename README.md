@@ -1,7 +1,7 @@
 > I have something here for you. Your father wanted you to have this when you were old enough, but your uncle wouldn't allow it. He feared you might follow on some damn fool idealistic crusade like your father did. It's your father's text editor. This is the weapon of a computer scientist. Not as clumsy or as random as an integrated development environment, but an elegant weapon for a more civilized age.
 
-This is Nate's [neovim](https://neovim.io/) configuration. If you want to try it out, you can just clone it to where neovim stores it's configuration on your OS. <br>
-But my reccomendation would be to install it using Nix, or try it out using my [WSL flake](https://github.com/NateSavage/wsl).
+This is my [neovim](https://neovim.io/) configuration. If you want to try it out, you can just clone it to where neovim stores it's configuration on your OS. <br>
+Because I believe Nix is the best package manager, my neovim config does not use include Mason to download language servers that aren't on your system already. If you install the config using Nix, all of the language servers I use will be included. You can also try it out using my [WSL flake](https://github.com/NateSavage/wsl) if you don't have a NixOS machine.
 
 <details><summary>Config Locations</summary>
   <details><summary>Windows</summary>
