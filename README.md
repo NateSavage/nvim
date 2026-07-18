@@ -1,7 +1,7 @@
 > I have something here for you. Your father wanted you to have this when you were old enough, but your uncle wouldn't allow it. He feared you might follow on some damn fool idealistic crusade like your father did. It's your father's text editor. This is the weapon of a computer scientist. Not as clumsy or as random as an integrated development environment, but an elegant weapon for a more civilized age.
 
 This is Nate's [neovim](https://neovim.io/) configuration. If you want to try it out, you can just clone it to where neovim stores it's configuration on your OS. <br>
-But my reccomendation would be to either install it in your NixOS flake, or try it out using my [WSL flake](https://github.com/NateSavage/wsl).
+But my reccomendation would be to install it using Nix, or try it out using my [WSL flake](https://github.com/NateSavage/wsl).
 
 <details><summary>Config Locations</summary>
   <details><summary>Windows</summary>
@@ -20,20 +20,41 @@ But my reccomendation would be to either install it in your NixOS flake, or try 
 
 ## Nix Install
 
-This flake is meant to be dropped into any NixOS machine flake — it's fully self-contained, no manual overlay/package
-wiring needed:
-
+<details><summary>Flake Example</summary>
+  
 ```nix
-inputs.nvim-config.url = "github:NateSavage/nvim";
+# flake.nix
+{
+  description = "My machine";
 
-# ...then, wherever your system config lives:
-imports = [ inputs.nvim-config.nixosModules.default ];
-programs.nates-nvim.enable = true;
-programs.nates-nvim.user = "your-username";
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    nates-nvim = {
+      url = "github:NateSavage/nvim";
+      # optional but recommended: prevents the nvim flake from pulling its own separate nixpkgs copy
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs-unstable.follows = "nixpkgs";
+    };
+  };
+
+  outputs = { nixpkgs, nates-nvim, ... }: {
+    nixosConfigurations.my-machine = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        nates-nvim.nixosModules
+        {
+          programs.nates-nvim = {
+            enable = true;
+            user = "YOUR_USERNAME";
+          };
+        }
+        ./configuration.nix
+      ];
+    };
+  };
+}
 ```
-
-`nix build .#default` tests the wrapped package standalone, without any of
-the above.
+</details>
 
 ---
 
