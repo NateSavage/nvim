@@ -33,10 +33,8 @@
       (nvim-wrappers.lib.evalModule (import ./nix/module.nix {
         inherit fff-nvim configDirectory;
       })).config.wrap { inherit pkgs; };
-  in {
-    lib.wrap = wrap;
 
-    nixosModules.default = { config, lib, pkgs, ... }: let
+    nvimNixosModule = { config, lib, pkgs, ... }: let
       cfg = config.programs.nates-nvim;
       homeDir = "/home/${cfg.user}";
     in {
@@ -82,6 +80,13 @@
         };
       };
     };
+  in {
+    lib.wrap = wrap;
+
+    # Both point at the same module - `nixosModule` (singular, no `.default`)
+    # is just the shorter name to type in a consumer's `imports`.
+    nixosModules.default = nvimNixosModule;
+    nixosModule = nvimNixosModule;
 
     # `nix build .#default` to test the wrapped package standalone.
     packages.x86_64-linux.default = wrap {
