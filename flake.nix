@@ -68,10 +68,16 @@
         users.users.${cfg.user}.packages = [ pkgs.nvimWrapped ];
 
         # Only clones if missing, so this never touches (or fights with) an
-        # existing checkout's local edits/commits.
+        # existing checkout's local edits/commits. If the target exists but
+        # isn't a git checkout yet (stale dir, first-time non-empty folder,
+        # etc.) `git clone` refuses to write into it and fails the whole
+        # activation - so move it aside instead of erroring out.
         system.activationScripts."nvim-config-${cfg.user}" = {
           text = ''
             if [ ! -e ${homeDir}/.config/nvim/.git ]; then
+              if [ -e ${homeDir}/.config/nvim ]; then
+                mv ${homeDir}/.config/nvim ${homeDir}/.config/nvim.bak-"$(date +%s)"
+              fi
               ${pkgs.git}/bin/git clone ${cfg.configRepo} ${homeDir}/.config/nvim
               chown -R ${cfg.user} ${homeDir}/.config/nvim
             fi
