@@ -48,9 +48,12 @@ in
   config.runtimePkgs = with pkgs; [
     stable.nodejs
     stable.csharp-ls     # lsp/roslyn.lua
-    stable.mono          # lsp/roslyn.lua - Mono MSBuild, needed for MSBuildWorkspace to load
-                         # classic-style (Unity-generated, v4.7.1-target) .csproj files. Without
-                         # it csharp-ls falls back to dotnet SDK's MSBuild and silently fails to
+    stable.mono          # lsp/roslyn.lua - needed alongside msbuild below for MSBuildWorkspace to
+                         # load classic-style (Unity-generated, v4.7.1-target) .csproj files.
+    stable.msbuild       # lsp/roslyn.lua - nixpkgs' `mono` does NOT bundle MSBuild (nixpkgs#95911,
+                         # #29817) - csharp-ls's build-host manager specifically looks for a real
+                         # `msbuild` binary, not just `mono` on PATH. Without it, csharp-ls falls
+                         # back to dotnet SDK's MSBuild for those projects and silently fails to
                          # finish loading the workspace, so hover/definition/rename never come up
                          # (only syntax-only features like folding/semantic-tokens do).
     stable.crystal
