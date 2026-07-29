@@ -48,6 +48,11 @@ in
   config.runtimePkgs = with pkgs; [
     stable.nodejs
     stable.csharp-ls     # lsp/roslyn.lua
+    stable.mono          # lsp/roslyn.lua - Mono MSBuild, needed for MSBuildWorkspace to load
+                         # classic-style (Unity-generated, v4.7.1-target) .csproj files. Without
+                         # it csharp-ls falls back to dotnet SDK's MSBuild and silently fails to
+                         # finish loading the workspace, so hover/definition/rename never come up
+                         # (only syntax-only features like folding/semantic-tokens do).
     stable.crystal
     stable.shards         # lsp/crystalline.lua build
     stable.cargo

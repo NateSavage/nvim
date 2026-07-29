@@ -12,13 +12,22 @@ vim.lsp.enable('astro')
 vim.lsp.enable('nix')
 vim.lsp.enable('just')
 
-local cs_solution = vim.fs.find(function(name)
-    return name:match('%.sln$') ~= nil
-end, { path = vim.fn.getcwd(), upward = true, type = 'file' })[1]
+-- Resolve the .sln to pass to csharp-ls per-root, at the time the client is
+-- actually started for that root - not once at nvim startup against
+-- whatever vim.fn.getcwd() happened to be when this file was sourced (which
+-- is frequently wrong: nvim's initial cwd rarely matches the C# project you
+-- open a few buffers later, e.g. via a file picker or `:e`).
+vim.lsp.config('roslyn', {
+    on_new_config = function(new_config, root_dir)
+        local cs_solution = vim.fs.find(function(name)
+            return name:match('%.sln$') ~= nil
+        end, { path = root_dir, upward = true, type = 'file' })[1]
 
-if cs_solution then
-    vim.lsp.config('roslyn', { cmd = { 'csharp-ls', '--solution', cs_solution } })
-end
+        if cs_solution then
+            new_config.cmd = { 'csharp-ls', '--solution', cs_solution }
+        end
+    end,
+})
 vim.lsp.enable('roslyn')
 --vim.lsp.enable('gdshader')
 -- Source - https://stackoverflow.com/a
