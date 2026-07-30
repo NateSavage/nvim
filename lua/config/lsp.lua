@@ -1,3 +1,4 @@
+local roslyn_status = require('config.roslyn_status')
 
 -- Set default root markers for all clients
 --vim.lsp.config('*', {
@@ -12,11 +13,7 @@ vim.lsp.enable('astro')
 vim.lsp.enable('nix')
 vim.lsp.enable('just')
 
--- Resolve the .sln to pass to csharp-ls per-root, at the time the client is
--- actually started for that root - not once at nvim startup against
--- whatever vim.fn.getcwd() happened to be when this file was sourced (which
--- is frequently wrong: nvim's initial cwd rarely matches the C# project you
--- open a few buffers later, e.g. via a file picker or `:e`).
+-- lazy initialization for csharp-ls matched on .sln files
 vim.lsp.config('roslyn', {
     on_new_config = function(new_config, root_dir)
         local cs_solution = vim.fs.find(function(name)
@@ -24,13 +21,27 @@ vim.lsp.config('roslyn', {
         end, { path = root_dir, upward = true, type = 'file' })[1]
 
         if cs_solution then
+            -- csharp-ls loads the solution via MSBuildWorkspace, which does not restore NuGet packages automatically.
+            local restore = vim.system({ 'dotnet', 'restore', cs_solution }, { text = true }):wait()
+            if restore.code ~= 0 then
+                roslyn_status.restore_error = ('restore failed: %s'):format(vim.fs.basename(cs_solution))
+                vim.notify(
+                    ('dotnet restore failed for %s:\n%s'):format(
+                        cs_solution,
+                        restore.stderr ~= '' and restore.stderr or restore.stdout
+                    ),
+                    vim.log.levels.ERROR
+                )
+            else
+                roslyn_status.restore_error = nil
+            end
+
             new_config.cmd = { 'csharp-ls', '--solution', cs_solution }
         end
     end,
 })
 vim.lsp.enable('roslyn')
 --vim.lsp.enable('gdshader')
--- Source - https://stackoverflow.com/a
 
 vim.api.nvim_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { noremap = true, silent = true })
@@ -70,11 +81,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
       end, 2000)
     end
 
-    if client and client:supports_method(vim.lsp.protocol.Methods.definition) then
+    if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_definition) then
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "go to definition" })
     end
 
-    if client and client:supports_method(vim.lsp.protocol.Methods.declaration) then
+    if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_declaration) then
       vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "go to declaration" })
     end
 

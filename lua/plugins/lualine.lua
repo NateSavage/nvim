@@ -167,12 +167,23 @@ ins_left {
     function() return '%=' end,
 }
 
+local roslyn_status = require('config.roslyn_status')
+
+-- Tracks whether the current text was flagged as a problem so the component can color itself accordingly instead of
+-- always looking "fine".
+local lsp_component_degraded = false
+
 ins_left {
     function()
         local fixed_width = 40
         local status = vim.lsp.status()
         local text
-        if status and status ~= '' then
+        lsp_component_degraded = false
+
+        if roslyn_status.restore_error then
+            text = roslyn_status.restore_error
+            lsp_component_degraded = true
+        elseif status and status ~= '' then
             text = status
         elseif vim.b.lsp_loading then
             text = 'Loading...'
@@ -186,6 +197,11 @@ ins_left {
                 local filetypes = client.config.filetypes
                 if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
                     text = client.name
+                    -- when this is false gd/gD/hover are definitely not going to work right now.
+                    if not client:supports_method(vim.lsp.protocol.Methods.textDocument_definition) then
+                        text = text .. ' (no defs)'
+                        lsp_component_degraded = true
+                    end
                     break
                 end
             end
@@ -198,7 +214,9 @@ ins_left {
         return string.rep(' ', pad) .. text .. string.rep(' ', fixed_width - #text - pad)
     end,
     icon = '',
-    color = { fg = colors.fg, gui = 'bold' },
+    color = function()
+        return lsp_component_degraded and { fg = colors.red, gui = 'bold' } or { fg = colors.fg, gui = 'bold' }
+    end,
 }
 
 ins_right {

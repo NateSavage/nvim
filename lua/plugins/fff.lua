@@ -1,6 +1,15 @@
 -- Fast Fuzzy Finder binary is downloaded and managed by the nix flake
+--
 require('fff').setup({
     prompt = '🕯 ',
+    frecency = {
+        enabled = true,
+        db_path = vim.fn.stdpath('cache') .. '/fff_nvim',
+    },
+    history = {
+        enabled = true,
+        db_path = vim.fn.stdpath('data') .. '/fff_queries',
+    },
     layout = {
         height = 0.85,
         width = 0.85,
